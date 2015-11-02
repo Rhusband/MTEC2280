@@ -1,0 +1,60 @@
+//Serial Sequencer
+
+const int ledPin = 13;
+
+int seq1 = 0;
+int seq2 = 0;
+int seq3 = 0;
+int seq4 = 0;
+
+void setup() {
+  // initialize serial:
+  Serial.begin(9600);
+  // make the pins outputs:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // if there's any serial available, read it:
+  while (Serial.available() > 0) {
+
+    // look for the next valid integer in the incoming serial stream:
+    seq1 = Serial.parseInt();
+    // do it again:
+    seq2 = Serial.parseInt();
+    // do it again:
+    seq3 = Serial.parseInt();
+    seq4 = Serial.parseInt();
+
+    // look for the newline. That's the end of your
+    // sentence:
+    if (Serial.read() == '\n') {
+      // constrain the values to 0 - 255 and invert
+      // if you're using a common-cathode LED, just use "constrain(color, 0, 255);"
+      seq1 = constrain(seq1, 0, 255);
+      seq2 = constrain(seq2, 0, 255);
+      seq3 = constrain(seq3, 0, 255);
+      seq4 = constrain(seq4, 0, 255);
+
+
+
+      // print the three numbers in one string :
+      Serial.print(seq1);
+      Serial.print(',');
+      Serial.print(seq2);
+      Serial.print(',');
+      Serial.println(seq3);
+      Serial.print(',');
+      Serial.println(seq4);
+    }
+  }
+
+  analogWrite(ledPin, seq1);
+  delay(1000);
+  analogWrite(ledPin, seq2);
+  delay(500);
+  analogWrite(ledPin, seq3);
+  delay(500);
+  analogWrite(ledPin, seq3);
+  delay(1000);
+}
